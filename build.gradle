@@ -10,6 +10,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 
 android {
     compileSdk 31
@@ -18,7 +19,7 @@ android {
         minSdk 21
         targetSdk 31
         versionCode 2
-        versionName "1.10.0"
+        versionName "1.10.1"
     }
     buildTypes {
         release {
@@ -31,6 +32,43 @@ android {
         main {
             jni.srcDirs = []
             jniLibs.srcDir 'src/main/libs'
+        }
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.barteksc'
+                artifactId = 'pdfium-android'
+                version = '1.10.1'
+
+                pom {
+                    name = 'PdfiumAndroid'
+                    description = 'Fork of library for rendering PDFs on Android\'s Surface or Bitmap'
+                    url = 'https://github.com/barteksc/PdfiumAndroid'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'barteksc'
+                            name = 'Bartosz Schiller'
+                            email = 'barteksch@boo.pl'
+                        }
+                    }
+                    scm {
+                        connection = 'https://github.com/rrebellion/PdfiumAndroid.git'
+                        developerConnection = 'https://github.com/rrebellion/PdfiumAndroid.git'
+                        url = 'https://github.com/rrebellion/PdfiumAndroid'
+                    }
+                }
+            }
         }
     }
 }
